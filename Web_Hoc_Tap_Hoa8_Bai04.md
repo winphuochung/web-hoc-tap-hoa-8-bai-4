@@ -1439,6 +1439,15 @@ function doSubmit(){
       var secs = Math.max(0, Math.round((Date.now() - (quizStartTime || Date.now())) / 1000));
       var dur = Math.floor(secs / 60) + " phút " + (secs % 60) + " giây";
       var detail = QUESTIONS.map(function(item, qi){ return (qi + 1) + ": " + (answers[qi] < 0 ? "-" : LETTERS[answers[qi]]) + "/" + LETTERS[item.ans]; }).join(", ");
+      fetch("https://script.google.com/macros/s/AKfycbyvls7uDKhr7v2ZJlFJQPe6Mh4L9ENZ5dy9MIat7Hunlg7Yj7KJiiGg_8HkM3P27OtF4g/exec", {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body: JSON.stringify({name: currentStudent.name, className: currentStudent.cls, score: score, correct: score, detail: detail, duration: dur})}).catch(function(){});
+    } catch (e) {}
+  }
+  if (!scoreSent) {
+    scoreSent = true;
+    try {
+      var secs = Math.max(0, Math.round((Date.now() - (quizStartTime || Date.now())) / 1000));
+      var dur = Math.floor(secs / 60) + " phút " + (secs % 60) + " giây";
+      var detail = QUESTIONS.map(function(item, qi){ return (qi + 1) + ": " + (answers[qi] < 0 ? "-" : LETTERS[answers[qi]]) + "/" + LETTERS[item.ans]; }).join(", ");
       /* Điểm lưu trên máy (localStorage). Liên kết gửi điểm về Google Sheets sẽ được bổ sung sau khi Thầy triển khai Web App. */
     } catch (e) {}
   }
